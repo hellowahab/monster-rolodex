@@ -10,33 +10,32 @@ class App extends Component
   constructor(){
     super();
     this.state = {
-      name: {firstname:'Wahab', lastname:'Hussain'} 
-    }
+      monsters : [],
+    };
+  }
+
+  componentDidMount(){
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then((users) => this.setState(() => {
+        return{monsters: users}
+      },
+      () => {
+        console.log(this.state);
+      }      
+      ));
   }
 
   render()
   {
    return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hi {this.state.name.firstname }{this.state.name.lastname }
-        </p>
-        <button onClick={() => {
-          //this.setState({name: 'Wahab'})
-          this.setState(() => {
-            return {
-              name: {firstname: 'Wahab', lastname: 'Hussain'},
-            }
-          }, 
-          () => {
-            console.log(this.state);
-          });
-          console.log(this.state);    
-        }}>Change className</button>
-      </header>
-     </div>
+      {
+        this.state.monsters.map((monster) => {
+          return <h1  >{monster.name}</h1>
+        })        
+      }
+    </div>
     );
   }
 }
